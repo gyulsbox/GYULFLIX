@@ -1,28 +1,14 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Header from './Components/Header';
-import Home from './Routes/Home';
-import Latest from './Routes/Latest';
-import Movies from './Routes/Movies';
-import Search from './Routes/Search';
-import Tv from './Routes/Tv';
-import {ReactQueryDevtools} from 'react-query/devtools';
+import Router from "./Routes/Router";
+import { GlobalStyle } from "./Styles/GlobalStyle";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
 
 function App() {
   return (
     <>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/*" element={<Home />} />
-          <Route path="/tv" element={<Tv />} />
-          <Route path="/movies" element={<Movies />}>
-            <Route path="movies/:movieId"></Route>
-          </Route>
-          <Route path="/Latest" element={<Latest />} />
-          <Route path="/search" element={<Search />} />
-        </Routes>
-      </Router>
-      <ReactQueryDevtools />
+      <GlobalStyle />
+      <Router />
     </>
   );
 }

@@ -41,11 +41,13 @@ interface ISearch {
 interface IMovieTrailer {
   key: string;
   id: string;
+  type: string;
 }
 
 interface ITVTrailer {
   key: string;
   id: string;
+  type: string;
 }
 
 interface IGenres {
@@ -64,6 +66,17 @@ interface ITVImages {
   iso_639_1: string;
   iso_3166_1: string;
   name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+}
+
+interface IMovieLogo {
+  file_path: string;
 }
 
 export interface IGetMoviesResult {
@@ -126,12 +139,13 @@ export interface IGetMovieSimilar {
 }
 
 export interface IGetMovieImages {
-
+  id: number;
+  logos: IMovieLogo[];
 }
 
 export interface IGetTvImages {
   id: number;
-  results: IMovieTrailer[];
+  results: ITVImages[];
 }
 
 export const getMovies = async () => {
@@ -140,7 +154,7 @@ export const getMovies = async () => {
 };
 
 export const getMoviesDetail = async (movieId?: string) => {
-  const response = await fetch(`${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}&language=ko-KR`);
+  const response = await fetch(`${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}&language=en-US`);
   return await response.json();
 };
 
@@ -160,7 +174,7 @@ export const getTv = async (number?: number) => {
 };
 
 export const getTVDetail = async (tvId?: string) => {
-  const response = await fetch(`${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=ko-KR`);
+  const response = await fetch(`${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=en-US`);
   return await response.json();
 };
 
@@ -185,6 +199,6 @@ export const getMovieImages = async (movieId?: string) => {
 };
 
 export const getTvImages = async (tvId?: string) => {
-    const response = await fetch(`${BASE_PATH}/movie/${tvId}/images?api_key=${API_KEY}`);
-    return await response.json();
+  const response = await fetch(`${BASE_PATH}/movie/${tvId}/images?api_key=${API_KEY}`);
+  return await response.json();
 };
