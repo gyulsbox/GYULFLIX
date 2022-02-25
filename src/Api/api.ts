@@ -89,6 +89,7 @@ export interface IGetMoviesDetail {
   homepage: string;
   original_title: string;
   overview: string;
+  original_language: string;
   poster_path: string;
   release_date: string;
   runtime: number;
@@ -96,6 +97,7 @@ export interface IGetMoviesDetail {
   genres: IGenres[];
   production_companies: ICompanies[];
   spoken_languages: ILanguages[];
+  id: number;
 }
 
 export interface IGetMoviesTrailer {
@@ -123,6 +125,7 @@ export interface IGetTVDetail {
 export interface IMoiveSimilar {
   backdrop_path: string;
   original_title: string;
+  id: number;
 }
 
 export interface IGetTVTrailer {

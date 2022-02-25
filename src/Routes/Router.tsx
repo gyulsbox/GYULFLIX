@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "../Components/Header";
 import Home from "../Components/Home/Home";
 import Latest from "../Components/Latest/Latest";
 import Search from "../Components/Search/Search";
@@ -7,6 +6,7 @@ import Tv from "../Components/Tv/Tv";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Main from "../Components/Main/Main";
 import Upcoming from "../Components/Upcoming/Upcoming";
+import Header from "./Header";
 
 function App() {
   return (

@@ -13,7 +13,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
-import { width } from "@mui/system";
+import MovieDetail from "../Details/MovieDetail";
 
 const Wrapper = styled.div`
   height: 200vh;
@@ -30,18 +30,19 @@ const PlayerWrapper = styled.div`
   overflow: hidden;
 `;
 
-const Banner = styled.div<{ bgphoto: string }>`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 60px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url(${(props) => props.bgphoto});
-  background-size: cover;
-`;
+// const Banner = styled.div<{ bgphoto: string }>`
+//   height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   padding: 60px;
+//   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url(${(props) => props.bgphoto});
+//   background-size: cover;
+// `;
 
 const Title = styled(motion.img)`
   width: 30%;
+  margin-left: 20px;
   margin-bottom: 20px;
   padding: 0 20px;
 `;
@@ -50,6 +51,7 @@ const Overview = styled(motion.p)`
   font-size: 34px;
   width: 50%;
   padding: 20px;
+  margin-left: 20px;
 `;
 
 const SoundBtn = styled(motion.button)`
@@ -111,6 +113,7 @@ export const Decrease = styled(motion.div)`
   justify-content: center;
   z-index: 3;
   opacity: 0.7;
+  transform-origin: center left;
 `;
 
 export const Span1 = styled(motion.span)`
@@ -163,11 +166,12 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   }
 `;
 
-const InfoBox = styled(motion.div)`
+export const InfoBox = styled(motion.div)`
   padding: 10px;
   background-color: ${(props) => props.theme.black.lighter};
   opacity: 0;
   position: absolute;
+  z-index: 5;
   width: 100%;
   bottom: 0;
   p {
@@ -197,39 +201,31 @@ const Overlays = styled(motion.div)`
   background-image: linear-gradient(0deg, rgba(0, 0, 15, 0.1643251050420168) 85%, rgba(0, 0, 15, 1) 100%), linear-gradient(0deg, rgba(0, 0, 15, 1) 14%, rgba(0, 0, 15, 0.15592174369747902) 28%);
 `;
 
-const Modal = styled(motion.div)`
+export const Modal = styled(motion.div)`
+  width: 50%;
+  height: 90vh;
   position: absolute;
-  width: 40vw;
-  height: 80vh;
   left: 0;
   right: 0;
   margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
+  z-index: 200;
 `;
 
-const ModalCover = styled.div`
+export const ModalCover = styled.div`
   width: 100%;
-  height: 400px;
-  background-size: cover;
-  background-position: center center;
-`;
-
-const ModalTitle = styled.h3`
-  color: ${(props) => props.theme.white.lighter};
-  text-align: start;
-  font-size: 46px;
+  height: 100%;
   position: relative;
-  padding: 20px;
-  top: -80px;
-`;
-
-const ModalOverview = styled.p`
-  position: relative;
-  padding: 20px;
-  top: -80px;
-  color: ${(props) => props.theme.white.lighter};
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 50px;
+    background: black;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(#e0eafc, #cfdef3);
+    border-radius: 50px;
+  }
+  border-radius: 50px 0 0 50px;
 `;
 
 export const MovieCover = styled(motion.div)<{ bgimg?: string }>`
@@ -270,11 +266,10 @@ const boxVars = {
   },
 };
 
-const infoVars = {
+export const infoVars = {
   hover: {
     opacity: 1,
     transition: {
-      delay: 0.5,
       duaration: 0.1,
       type: "tween",
     },
@@ -304,21 +299,31 @@ const descVars = {
 };
 
 function Home() {
+  // navigate URL using with useNavigate() that belongs react-router-dom
   const navigate = useNavigate();
+  // boolean that matching with URL
   const ModalMatch = useMatch("/movies/:movieId");
+  // Y axis scroll progress indicator that belongs framer-motion
   const { scrollY } = useViewportScroll();
+  // save movieId key to local by using JS method
   const stateMovieId = localStorage.getItem("movieId");
+
+  // API fetching
   const { data: info, isLoading: infoLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
   const { data: trailer } = useQuery<IGetMoviesTrailer>("startTrailer", () => getMoviesTrailer(String(stateMovieId)));
   const { data: logo } = useQuery<IGetMovieImages>("movieLogo", () => getMovieImages(String(stateMovieId)));
-  console.log(logo);
 
+  // some of state
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [isBack, setIsBack] = useState(false);
   const [isVolum, setIsVolum] = useState(false);
+
+  // Recoil State Management about Trailer Sound
   const [isSound, setIsSound] = useRecoilState<SoundEnums>(isSoundAtom);
   const { OFF, ON } = SoundEnums;
+
+  // Sound ON, OFF
   const handleChangeSound = useCallback((): void => {
     if (isSound === OFF) {
       localStorage.setItem("sound", ON);
@@ -328,7 +333,11 @@ function Home() {
     localStorage.setItem("sound", OFF);
     setIsSound(OFF);
   }, [OFF, ON, isSound, setIsSound]);
+
+  // amount of movie that showing
   let offset = 6;
+
+  // a Index of Movie Box
   const increaseIndex = () => {
     if (info) {
       if (leaving) return;
@@ -339,6 +348,7 @@ function Home() {
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+
   const decreaseIndex = () => {
     if (info) {
       if (leaving) return;
@@ -349,7 +359,11 @@ function Home() {
       setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
   };
+
+  // boolean that movie box's leaved state
   const toggleLeaving = () => setLeaving((prev) => !prev);
+
+  // Pop-up Modal about movie by Click & Set Volum
   const onBoxClicked = (movieId: number) => {
     navigate(`/movies/${movieId}`);
     setIsVolum(true);
@@ -358,6 +372,8 @@ function Home() {
     navigate(`/movies`);
     setIsVolum(false);
   };
+
+  // Make same that movieId what i Clicked one
   const clickedMovie = ModalMatch?.params.movieId && info?.results.find((movie) => movie.id + "" === ModalMatch.params.movieId);
 
   return (
@@ -395,7 +411,7 @@ function Home() {
             <Slider>
               <PageChange>
                 <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseIndex}>
-                  <ArrowBackIosIcon fontSize="large" />
+                  <ArrowBackIosIcon style={{ marginLeft: 20 }} fontSize="large" />
                 </Decrease>
                 <Increase whileHover={{ scale: 1.2 }} onClick={increaseIndex}>
                   <ArrowForwardIosIcon fontSize="large" />
@@ -434,15 +450,9 @@ function Home() {
                 <Modal style={{ top: scrollY.get() + 100 }} layoutId={ModalMatch.params.movieId}>
                   {clickedMovie && (
                     <>
-                      <ModalCover
-                        style={{
-                          backgroundImage: `
-                            linear-gradient(to top, black, transparent),
-                          url(${makeImagePath(clickedMovie.backdrop_path)})`,
-                        }}
-                      />
-                      <ModalTitle>{clickedMovie.title}</ModalTitle>
-                      <ModalOverview>{clickedMovie.overview}</ModalOverview>
+                      <ModalCover>
+                        <MovieDetail />
+                      </ModalCover>
                     </>
                   )}
                 </Modal>
