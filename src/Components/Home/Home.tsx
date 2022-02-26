@@ -310,7 +310,7 @@ function Home() {
 
   // API fetching
   const { data: info, isLoading: infoLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
-  const { data: trailer } = useQuery<IGetMoviesTrailer>("startTrailer", () => getMoviesTrailer(String(stateMovieId)));
+  const { data: trailer } = useQuery<IGetMoviesTrailer>("startMovieTrailer", () => getMoviesTrailer(String(stateMovieId)));
   const { data: logo } = useQuery<IGetMovieImages>("movieLogo", () => getMovieImages(String(stateMovieId)));
 
   // some of state

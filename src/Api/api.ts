@@ -17,10 +17,10 @@ interface IMovie {
   vote_average: string;
 }
 
-interface ITV {
+interface ITv {
   id: number;
   backdrop_path: string;
-  original_name: string;
+  name: string;
   overview: string;
   vote_average: number;
   poster_path: string;
@@ -44,7 +44,7 @@ interface IMovieTrailer {
   type: string;
 }
 
-interface ITVTrailer {
+interface ITvTrailer {
   key: string;
   id: string;
   type: string;
@@ -62,17 +62,8 @@ interface ILanguages {
   name: string;
 }
 
-interface ITVImages {
-  iso_639_1: string;
-  iso_3166_1: string;
-  name: string;
-  key: string;
-  site: string;
-  size: number;
-  type: string;
-  official: boolean;
-  published_at: string;
-  id: string;
+interface ITvLogo {
+  file_path: string;
 }
 
 interface IMovieLogo {
@@ -105,21 +96,26 @@ export interface IGetMoviesTrailer {
   results: IMovieTrailer[];
 }
 
-export interface IGetTVResult {
+export interface IGetTvResult {
   page: number;
-  results: ITV[];
+  results: ITv[];
 }
 
-export interface IGetTVDetail {
+export interface IGetTvDetail {
   adult: boolean;
   backdrop_path: string;
-  homepage: string;
-  id: number;
-  original_name: string;
+  name: string;
   overview: string;
-  poster_path: string;
   first_air_date: string;
+  runtime: number;
   vote_average: number;
+  genres: IGenres[];
+  episode_run_time: string;
+  production_companies: ICompanies[];
+  spoken_languages: ILanguages[];
+  id: number;
+  number_of_episodes: string;
+  number_of_seasons: string;
 }
 
 export interface IMoiveSimilar {
@@ -128,8 +124,14 @@ export interface IMoiveSimilar {
   id: number;
 }
 
-export interface IGetTVTrailer {
-  results: ITVTrailer[];
+export interface ITvSimilar {
+  backdrop_path: string;
+  name: string;
+  id: number;
+}
+
+export interface IGetTvTrailer {
+  results: ITvTrailer[];
 }
 
 export interface IGetSearchResult {
@@ -141,6 +143,10 @@ export interface IGetMovieSimilar {
   results: IMoiveSimilar[];
 }
 
+export interface IGetTvSimilar {
+  results: ITvSimilar[];
+}
+
 export interface IGetMovieImages {
   id: number;
   logos: IMovieLogo[];
@@ -148,9 +154,10 @@ export interface IGetMovieImages {
 
 export interface IGetTvImages {
   id: number;
-  results: ITVImages[];
+  logos: ITvLogo[];
 }
 
+// MOVIE API
 export const getMovies = async () => {
   const response = await fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}&page=1`);
   return await response.json();
@@ -161,38 +168,13 @@ export const getMoviesDetail = async (movieId?: string) => {
   return await response.json();
 };
 
-export const getMoviesTrailer = async (movieId?: string) => {
-  const response = await fetch(`${BASE_PATH}/movie/${movieId}/videos?api_key=${API_KEY}`);
-  return await response.json();
-};
-
-export const getUpcoming = async (number?: number) => {
-  const response = await fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&page=${number}`);
-  return await response.json();
-};
-
-export const getTv = async (number?: number) => {
-  const response = await fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&page=${number}`);
-  return await response.json();
-};
-
-export const getTVDetail = async (tvId?: string) => {
-  const response = await fetch(`${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=en-US`);
-  return await response.json();
-};
-
-export const getTvTrailer = async (tvId?: string) => {
-  const response = await fetch(`${BASE_PATH}/tv/${tvId}/videos?api_key=${API_KEY}`);
-  return await response.json();
-};
-
-export const getSearch = async (query?: string) => {
-  const response = await fetch(`${BASE_PATH}/search/multi?api_key=${API_KEY}&query=${query}&page=1&include_adult=false`);
-  return await response.json();
-};
-
 export const getMovieSimilar = async (movieId?: string) => {
   const response = await fetch(`${BASE_PATH}/movie/${movieId}/similar?api_key=${API_KEY}&page=1`);
+  return await response.json();
+};
+
+export const getMoviesTrailer = async (movieId?: string) => {
+  const response = await fetch(`${BASE_PATH}/movie/${movieId}/videos?api_key=${API_KEY}`);
   return await response.json();
 };
 
@@ -201,7 +183,38 @@ export const getMovieImages = async (movieId?: string) => {
   return await response.json();
 };
 
+// TV API
+export const getTv = async () => {
+  const response = await fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&page=1`);
+  return await response.json();
+};
+
+export const getTvDetail = async (tvId?: string) => {
+  const response = await fetch(`${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=en-US`);
+  return await response.json();
+};
+
+export const getTvSimilar = async (tvId?: string) => {
+  const response = await fetch(`${BASE_PATH}/tv/${tvId}/similar?api_key=${API_KEY}&page=1`);
+  return await response.json();
+};
+
+export const getTvTrailer = async (tvId?: string) => {
+  const response = await fetch(`${BASE_PATH}/tv/${tvId}/videos?api_key=${API_KEY}`);
+  return await response.json();
+};
+
 export const getTvImages = async (tvId?: string) => {
-  const response = await fetch(`${BASE_PATH}/movie/${tvId}/images?api_key=${API_KEY}`);
+  const response = await fetch(`${BASE_PATH}/tv/${tvId}/images?api_key=${API_KEY}`);
+  return await response.json();
+};
+
+export const getUpcoming = async (number?: number) => {
+  const response = await fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&page=${number}`);
+  return await response.json();
+};
+
+export const getSearch = async (query?: string) => {
+  const response = await fetch(`${BASE_PATH}/search/multi?api_key=${API_KEY}&query=${query}&page=1&include_adult=false`);
   return await response.json();
 };
