@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { getMovies, getTv, IGetMoviesResult, IGetTvResult } from "../../Api/api";
+import { getMovies, getNewPopular, getTv, IGetMoviesResult, IGetTvResult } from "../../Api/api";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Loading from "../../Styles/Loading";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -238,9 +238,11 @@ const logoVars = {
 
 const Main = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("start", getMovies);
-  const { data: info } = useQuery<IGetTvResult>(["tvs", "nowPlaying"], getTv);
+  const { data: tvInfo } = useQuery<IGetTvResult>(["tvs"], getTv);
+  const { data: newInfo } = useQuery<IGetTvResult>(["new"], getNewPopular);
   localStorage.setItem("movieId", String(data?.results[0].id));
-  localStorage.setItem("tvId", String(info?.results[2].id));
+  localStorage.setItem("tvId", String(tvInfo?.results[2].id));
+  localStorage.setItem("latestId", String(newInfo?.results[0].id));
   return (
     <>
       {isLoading ? (

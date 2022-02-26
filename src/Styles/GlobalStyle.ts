@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
+
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -32,6 +34,9 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
+    ::-webkit-scrollbar {
+    display: none;
+  }
 }
 menu, ol, ul {
   list-style: none;

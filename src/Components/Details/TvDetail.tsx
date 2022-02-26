@@ -7,12 +7,11 @@ import styled from "styled-components";
 import { getTvDetail, getTvSimilar, getTvTrailer, IGetTvDetail, IGetTvSimilar, IGetTvTrailer } from "../../Api/api";
 import { makeImagePath, makeVideoPath, noPoster } from "../../Api/utils";
 import Stack from "@mui/material/Stack";
-import CancelIcon from "@mui/icons-material/Cancel";
 import Rating from "@mui/material/Rating";
 import Loading from "../../Styles/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faVolumeMute, faPlayCircle } from "@fortawesome/free-solid-svg-icons";
-import { InfoBox, infoVars } from "../Home/Home";
+import { faVolumeHigh, faVolumeMute, faPlayCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { InfoBox, infoVars } from "../Movie/Movie";
 
 const Container = styled(motion.div)`
   width: 100%;
@@ -77,18 +76,6 @@ const BannerBackBox = styled.div`
   position: absolute;
 `;
 
-const BannerBack = styled(motion.div)`
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0;
-  background-color: #2c3e50;
-  border-radius: 50%;
-  color: ${(props) => props.theme.white.darker};
-`;
-
 const BannerFooterBox = styled.footer`
   width: 100%;
   height: 50px;
@@ -103,14 +90,18 @@ const BannerFooter = styled.footer`
   justify-content: flex-end;
 `;
 
-const BannerVolum = styled.button`
+const BannerBtn = styled(motion.button)`
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: 0;
   background-color: #9ca7b2;
   margin-top: 10px;
+  font-size: 16px;
   cursor: pointer;
+  &:last-child {
+    margin-left: 10px;
+  }
 `;
 
 const DetailBanner = styled.div<{ bgimg?: string }>`
@@ -229,6 +220,7 @@ const WrapperColor = styled.div`
   height: 100%;
   border-radius: 10px;
   font-weight: 600;
+  background-color: rgba(200, 182, 148, 0.6);
 `;
 
 const GenresContainer = styled.div`
@@ -245,6 +237,9 @@ const Companies = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 3fr);
   justify-items: center;
+
+  padding: 3px;
+  border-radius: 5px;
 `;
 
 const LogoPath = styled.div<{ bgimg: string }>`
@@ -255,6 +250,7 @@ const LogoPath = styled.div<{ bgimg: string }>`
   background-size: contain;
   background-repeat: no-repeat;
   margin: 10px;
+  border: none;
 `;
 
 const SemiContainer = styled.div`
@@ -335,17 +331,16 @@ const TvDetail = () => {
                 ></ReactPlayer>
                 <Banner>
                   <BannerBackContainer>
-                    <BannerBackBox>
-                      <BannerBack onClick={onClicked} whileHover={{ rotate: "90deg" }}>
-                        <CancelIcon fontSize="large"></CancelIcon>
-                      </BannerBack>
-                    </BannerBackBox>
+                    <BannerBackBox />
                   </BannerBackContainer>
                   <BannerFooterBox>
                     <BannerFooter>
-                      <BannerVolum onClick={volumClick}>
+                      <BannerBtn onClick={volumClick}>
                         <FontAwesomeIcon icon={volum ? faVolumeHigh : faVolumeMute} />
-                      </BannerVolum>
+                      </BannerBtn>
+                      <BannerBtn onClick={onClicked} whileHover={{ rotate: "90deg" }}>
+                        <FontAwesomeIcon icon={faXmark} />
+                      </BannerBtn>
                     </BannerFooter>
                   </BannerFooterBox>
                 </Banner>

@@ -5,19 +5,20 @@ import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { getTv, getTvImages, getTvTrailer, IGetTvImages, IGetTvResult, IGetTvTrailer } from "../../Api/api";
+import { getTv, getTvAir, getTvImages, getTvTop, getTvTrailer, IGetTvImages, IGetTvResult, IGetTvTrailer } from "../../Api/api";
 import { makeImagePath, makeVideoPath, noPoster } from "../../Api/utils";
 import { isSoundAtom, SoundEnums } from "../../Recoil/atoms";
 import Loading from "../../Styles/Loading";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle, faPlay, faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import TvDetail from "../Details/TvDetail";
 
 const Wrapper = styled.div`
-  height: 200vh;
-  background: black;
+  height: 100%;
+  background: #141414;
+  overflow-x: hidden;
 `;
 
 const PlayerWrapper = styled.div`
@@ -54,6 +55,49 @@ const Overview = styled(motion.p)`
   margin-left: 20px;
 `;
 
+const MainBox = styled(motion.div)`
+  position: absolute;
+  width: 30%;
+  padding: 20px;
+  margin-left: 20px;
+  top: 60%;
+  left: 3.5%;
+  display: flex;
+  opacity: 0;
+  button {
+    padding: 10px 0;
+    border-radius: 5px;
+    border: none;
+    margin-right: 2%;
+    cursor: pointer;
+  }
+`;
+
+const MainPlayBtn = styled(motion.button)`
+  width: 25%;
+
+  background-color: white;
+  color: black;
+  span {
+    font-size: 1.6rem;
+  }
+  svg {
+    margin-right: 10px;
+  }
+`;
+
+const MainInfoBtn = styled(motion.button)`
+  width: 40%;
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white;
+  span {
+    font-size: 1.6rem;
+  }
+  svg {
+    margin-right: 10px;
+  }
+`;
+
 const SoundBtn = styled(motion.button)`
   position: absolute;
   top: 65%;
@@ -84,6 +128,7 @@ const SoundSvg = styled(motion.div)`
   right: 110px;
   border: 1px solid white;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const PageChange = styled.div`
@@ -132,6 +177,7 @@ export const SliderContainer = styled(motion.div)`
   height: 200px;
   width: 100%;
   position: relative;
+  margin-bottom: 5%;
 `;
 
 const Slider = styled.div`
@@ -198,7 +244,7 @@ const Overlays = styled(motion.div)`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(0deg, rgba(0, 0, 15, 0.1643251050420168) 85%, rgba(0, 0, 15, 1) 100%), linear-gradient(0deg, rgba(0, 0, 15, 1) 14%, rgba(0, 0, 15, 0.15592174369747902) 28%);
+  background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.1643251050420168) 85%, rgba(20, 20, 20, 1) 100%), linear-gradient(0deg, rgba(20, 20, 20, 1) 14%, rgba(20, 20, 20, 0.15592174369747902) 28%);
 `;
 
 export const Modal = styled(motion.div)`
@@ -279,7 +325,7 @@ export const infoVars = {
 const titleVars = {
   animate: {
     scale: 0.8,
-    y: 150,
+    y: 110,
     x: -20,
     transition: {
       delay: 5,
@@ -298,6 +344,21 @@ const descVars = {
   },
 };
 
+const btnVars = {
+  animate: {
+    opacity: 1,
+    transition: {
+      delay: 6,
+    },
+  },
+};
+
+const hoverVars = {
+  hover: {
+    opacity: 0.7,
+  },
+};
+
 function Tv() {
   // navigate URL using with useNavigate() that belongs react-router-dom
   const navigate = useNavigate();
@@ -310,14 +371,22 @@ function Tv() {
 
   // API fetching
   const { data: info, isLoading: infoLoading } = useQuery<IGetTvResult>(["tvs", "nowPlaying"], getTv);
+  const { data: aInfo } = useQuery<IGetTvResult>(["tvsAir", "airPlaying"], getTvAir);
+  const { data: tInfo } = useQuery<IGetTvResult>(["tvsTop", "topPlaying"], getTvTop);
   const { data: trailer } = useQuery<IGetTvTrailer>("startTvTrailer", () => getTvTrailer(String(stateTvId)));
   const { data: logo } = useQuery<IGetTvImages>("tvLogo", () => getTvImages(String(stateTvId)));
 
   // some of state
   const [index, setIndex] = useState(0);
+  const [aIndex, setAIndex] = useState(0);
+  const [tIndex, setTIndex] = useState(0);
+
   const [leaving, setLeaving] = useState(false);
   const [isBack, setIsBack] = useState(false);
   const [isVolum, setIsVolum] = useState(false);
+
+  const [aDex, setADex] = useState(false);
+  const [tDex, setTDex] = useState(false);
 
   // Recoil State Management about Trailer Sound
   const [isSound, setIsSound] = useRecoilState<SoundEnums>(isSoundAtom);
@@ -360,6 +429,50 @@ function Tv() {
     }
   };
 
+  const increaseAIndex = () => {
+    if (aInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(false);
+      const totalTvs = aInfo.results.length;
+      const maxIndex = Math.floor(totalTvs / offset) - 1;
+      setAIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const decreaseAIndex = () => {
+    if (aInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(true);
+      const totalTvs = aInfo.results.length - 1;
+      const maxIndex = Math.floor(totalTvs / offset) - 1;
+      setAIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+    }
+  };
+
+  const increaseTIndex = () => {
+    if (tInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(false);
+      const totalTvs = tInfo.results.length;
+      const maxIndex = Math.floor(totalTvs / offset) - 1;
+      setTIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const decreaseTIndex = () => {
+    if (tInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(true);
+      const totalTvs = tInfo.results.length - 1;
+      const maxIndex = Math.floor(totalTvs / offset) - 1;
+      setTIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+    }
+  };
+
   // boolean that movie box's leaved state
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
@@ -368,13 +481,36 @@ function Tv() {
     navigate(`/tv/${tvId}`);
     setIsVolum(true);
   };
+
+  const onABoxClicked = (tvId: number) => {
+    navigate(`/tv/${tvId}`);
+    setADex((prev) => !prev);
+    setIsVolum(true);
+  };
+
+  const onTBoxClicked = (tvId: number) => {
+    navigate(`/tv/${tvId}`);
+    setTDex((prev) => !prev);
+    setIsVolum(true);
+  };
+
   const onOverlayClicked = () => {
     navigate(`/tv`);
     setIsVolum(false);
+    if (aDex === true) {
+      setADex((prev) => !prev);
+    }
+    if (tDex === true) {
+      setTDex((prev) => !prev);
+    }
   };
 
   // Make same that movieId what i Clicked one
   const clickedTv = ModalMatch?.params.tvId && info?.results.find((tv) => tv.id + "" === ModalMatch.params.tvId);
+  const clickedATv = ModalMatch?.params.tvId && aInfo?.results.find((tv) => tv.id + "" === ModalMatch.params.tvId);
+  const clickedTTv = ModalMatch?.params.tvId && tInfo?.results.find((tv) => tv.id + "" === ModalMatch.params.tvId);
+
+  const ModalID = aDex ? ModalMatch?.params.tvId + "a" : tDex ? ModalMatch?.params.tvId + "t" : ModalMatch?.params.tvId;
 
   return (
     <Wrapper>
@@ -393,6 +529,20 @@ function Tv() {
                   <FontAwesomeIcon icon={isSound === "0" ? faVolumeMute : faVolumeHigh} />
                 </SoundSvg>
               </SoundBtn>
+              <MainBox variants={btnVars} animate="animate">
+                <MainPlayBtn variants={hoverVars} whileHover="hover" onClick={() => alert("Please Sign in first.")}>
+                  <span>
+                    <FontAwesomeIcon icon={faPlay} />
+                    Play
+                  </span>
+                </MainPlayBtn>
+                <MainInfoBtn variants={hoverVars} whileHover="hover" onClick={() => onBoxClicked(Number(stateTvId))}>
+                  <span>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    More Info
+                  </span>
+                </MainInfoBtn>
+              </MainBox>
             </Overlays>
             <ReactPlayer
               style={{ backgroundColor: `linear-gradient(to top, black, transparent)` }}
@@ -407,7 +557,7 @@ function Tv() {
             />
           </PlayerWrapper>
           <SliderContainer>
-            <Span1>Popular TV Show</Span1>
+            <Span1>Trending Now</Span1>
             <Slider>
               <PageChange>
                 <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseIndex}>
@@ -443,12 +593,86 @@ function Tv() {
               </AnimatePresence>
             </Slider>
           </SliderContainer>
+          <SliderContainer>
+            <Span1>Top Rated Tv Show</Span1>
+            <Slider>
+              <PageChange>
+                <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseTIndex}>
+                  <ArrowBackIosIcon style={{ marginLeft: 20 }} fontSize="large" />
+                </Decrease>
+                <Increase whileHover={{ scale: 1.2 }} onClick={increaseTIndex}>
+                  <ArrowForwardIosIcon fontSize="large" />
+                </Increase>
+              </PageChange>
+              <AnimatePresence custom={isBack} initial={false} onExitComplete={toggleLeaving}>
+                <Row custom={isBack} variants={rowVars} initial="invisible" animate="visible" exit="exit" transition={{ type: "tween", duration: 1 }} key={tIndex}>
+                  {tInfo?.results
+                    .slice(1)
+                    .slice(offset * tIndex, offset * tIndex + offset)
+                    .map((tv) => (
+                      <Box
+                        layoutId={tv.id + "t"}
+                        key={tv.id}
+                        whileHover="hover"
+                        initial="normal"
+                        exit="exit"
+                        variants={boxVars}
+                        transition={{ type: "tween" }}
+                        onClick={() => onTBoxClicked(tv.id)}
+                        bgphoto={tv.backdrop_path === null ? noPoster : makeImagePath(tv.backdrop_path)}
+                      >
+                        <InfoBox variants={infoVars}>
+                          <p>{tv.name}</p>
+                        </InfoBox>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </SliderContainer>
+          <SliderContainer>
+            <Span1>On Air TV Show</Span1>
+            <Slider>
+              <PageChange>
+                <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseAIndex}>
+                  <ArrowBackIosIcon style={{ marginLeft: 20 }} fontSize="large" />
+                </Decrease>
+                <Increase whileHover={{ scale: 1.2 }} onClick={increaseAIndex}>
+                  <ArrowForwardIosIcon fontSize="large" />
+                </Increase>
+              </PageChange>
+              <AnimatePresence custom={isBack} initial={false} onExitComplete={toggleLeaving}>
+                <Row custom={isBack} variants={rowVars} initial="invisible" animate="visible" exit="exit" transition={{ type: "tween", duration: 1 }} key={aIndex}>
+                  {aInfo?.results
+                    .slice(1)
+                    .slice(offset * aIndex, offset * aIndex + offset)
+                    .map((tv) => (
+                      <Box
+                        layoutId={tv.id + "a"}
+                        key={tv.id}
+                        whileHover="hover"
+                        initial="normal"
+                        exit="exit"
+                        variants={boxVars}
+                        transition={{ type: "tween" }}
+                        onClick={() => onABoxClicked(tv.id)}
+                        bgphoto={tv.backdrop_path === null ? noPoster : makeImagePath(tv.backdrop_path, "w500")}
+                      >
+                        <InfoBox variants={infoVars}>
+                          <p>{tv.name}</p>
+                        </InfoBox>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </SliderContainer>
           <AnimatePresence>
             {ModalMatch ? (
               <>
                 <Overlay onClick={onOverlayClicked} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-                <Modal style={{ top: scrollY.get() + 100 }} layoutId={ModalMatch.params.tvId}>
-                  {clickedTv && (
+                <Modal style={{ top: scrollY.get() + 100 }} layoutId={ModalID}>
+                  {(clickedTv || clickedATv || clickedTTv) && (
                     <>
                       <ModalCover>
                         <TvDetail />

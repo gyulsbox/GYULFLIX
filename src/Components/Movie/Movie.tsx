@@ -5,19 +5,20 @@ import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { getMovieImages, getMovies, getMoviesTrailer, IGetMovieImages, IGetMoviesResult, IGetMoviesTrailer } from "../../Api/api";
+import { getMovieImages, getMovies, getMoviesPopular, getMoviesTop, getMoviesTrailer, getMoviesWeek, IGetMovieImages, IGetMoviesResult, IGetMoviesTrailer } from "../../Api/api";
 import { makeImagePath, makeVideoPath } from "../../Api/utils";
 import { isSoundAtom, SoundEnums } from "../../Recoil/atoms";
 import Loading from "../../Styles/Loading";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+import { faVolumeHigh, faVolumeMute, faInfoCircle, faPlay } from "@fortawesome/free-solid-svg-icons";
 import MovieDetail from "../Details/MovieDetail";
 
 const Wrapper = styled.div`
-  height: 200vh;
-  background: black;
+  height: 100%;
+  background: #141414;
+  overflow-x: hidden;
 `;
 
 const PlayerWrapper = styled.div`
@@ -54,6 +55,49 @@ const Overview = styled(motion.p)`
   margin-left: 20px;
 `;
 
+const MainBox = styled(motion.div)`
+  position: absolute;
+  width: 30%;
+  padding: 20px;
+  margin-left: 20px;
+  top: 60%;
+  left: 3.5%;
+  display: flex;
+  opacity: 0;
+  button {
+    padding: 10px 0;
+    border-radius: 5px;
+    border: none;
+    margin-right: 2%;
+    cursor: pointer;
+  }
+`;
+
+const MainPlayBtn = styled(motion.button)`
+  width: 25%;
+
+  background-color: white;
+  color: black;
+  span {
+    font-size: 1.6rem;
+  }
+  svg {
+    margin-right: 10px;
+  }
+`;
+
+const MainInfoBtn = styled(motion.button)`
+  width: 40%;
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white;
+  span {
+    font-size: 1.6rem;
+  }
+  svg {
+    margin-right: 10px;
+  }
+`;
+
 const SoundBtn = styled(motion.button)`
   position: absolute;
   top: 65%;
@@ -84,6 +128,7 @@ const SoundSvg = styled(motion.div)`
   right: 110px;
   border: 1px solid white;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const PageChange = styled.div`
@@ -132,6 +177,7 @@ export const SliderContainer = styled(motion.div)`
   height: 200px;
   width: 100%;
   position: relative;
+  margin-bottom: 5%;
 `;
 
 const Slider = styled.div`
@@ -198,7 +244,7 @@ const Overlays = styled(motion.div)`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(0deg, rgba(0, 0, 15, 0.1643251050420168) 85%, rgba(0, 0, 15, 1) 100%), linear-gradient(0deg, rgba(0, 0, 15, 1) 14%, rgba(0, 0, 15, 0.15592174369747902) 28%);
+  background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.1643251050420168) 85%, rgba(20, 20, 20, 1) 100%), linear-gradient(0deg, rgba(20, 20, 20, 1) 14%, rgba(20, 20, 20, 0.15592174369747902) 28%);
 `;
 
 export const Modal = styled(motion.div)`
@@ -298,6 +344,21 @@ const descVars = {
   },
 };
 
+const btnVars = {
+  animate: {
+    opacity: 1,
+    transition: {
+      delay: 6,
+    },
+  },
+};
+
+const hoverVars = {
+  hover: {
+    opacity: 0.7,
+  },
+};
+
 function Home() {
   // navigate URL using with useNavigate() that belongs react-router-dom
   const navigate = useNavigate();
@@ -310,14 +371,25 @@ function Home() {
 
   // API fetching
   const { data: info, isLoading: infoLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
+  const { data: pInfo } = useQuery<IGetMoviesResult>(["pMovies", "pNowPlaying"], getMoviesPopular);
+  const { data: tInfo } = useQuery<IGetMoviesResult>(["tMovies", "tNowPlaying"], getMoviesTop);
+  const { data: wInfo } = useQuery<IGetMoviesResult>(["wMovies", "wNowPlaying"], getMoviesWeek);
   const { data: trailer } = useQuery<IGetMoviesTrailer>("startMovieTrailer", () => getMoviesTrailer(String(stateMovieId)));
   const { data: logo } = useQuery<IGetMovieImages>("movieLogo", () => getMovieImages(String(stateMovieId)));
 
   // some of state
   const [index, setIndex] = useState(0);
+  const [pIndex, setPIndex] = useState(0);
+  const [tIndex, setTIndex] = useState(0);
+  const [wIndex, setWIndex] = useState(0);
+
   const [leaving, setLeaving] = useState(false);
   const [isBack, setIsBack] = useState(false);
   const [isVolum, setIsVolum] = useState(false);
+
+  const [pDex, setPDex] = useState(false);
+  const [tDex, setTDex] = useState(false);
+  const [wDex, setWDex] = useState(false);
 
   // Recoil State Management about Trailer Sound
   const [isSound, setIsSound] = useRecoilState<SoundEnums>(isSoundAtom);
@@ -360,6 +432,72 @@ function Home() {
     }
   };
 
+  const increasePIndex = () => {
+    if (pInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(false);
+      const totalMovies = pInfo.results.length;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setPIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const decreasePIndex = () => {
+    if (pInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(true);
+      const totalMovies = pInfo.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setPIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+    }
+  };
+
+  const increaseTIndex = () => {
+    if (tInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(false);
+      const totalMovies = tInfo.results.length;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setTIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const decreaseTIndex = () => {
+    if (tInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(true);
+      const totalMovies = tInfo.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setTIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+    }
+  };
+
+  const increaseWIndex = () => {
+    if (wInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(false);
+      const totalMovies = wInfo.results.length;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setWIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const decreaseWIndex = () => {
+    if (wInfo) {
+      if (leaving) return;
+      toggleLeaving();
+      setIsBack(true);
+      const totalMovies = wInfo.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setWIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+    }
+  };
+
   // boolean that movie box's leaved state
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
@@ -368,13 +506,51 @@ function Home() {
     navigate(`/movies/${movieId}`);
     setIsVolum(true);
   };
+
+  const onPBoxClicked = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+    setPDex((prev) => !prev);
+    setIsVolum(true);
+  };
+
+  const onTBoxClicked = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+    setTDex((prev) => !prev);
+    setIsVolum(true);
+  };
+
+  const onWBoxClicked = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+    setWDex((prev) => !prev);
+    setIsVolum(true);
+  };
+
   const onOverlayClicked = () => {
     navigate(`/movies`);
     setIsVolum(false);
+
+    if (pDex === true) {
+      setPDex((prev) => !prev);
+    }
+    if (tDex === true) {
+      setTDex((prev) => !prev);
+    }
+    if (wDex === true) {
+      setWDex((prev) => !prev);
+    }
   };
 
   // Make same that movieId what i Clicked one
   const clickedMovie = ModalMatch?.params.movieId && info?.results.find((movie) => movie.id + "" === ModalMatch.params.movieId);
+
+  const clickedPMovie = ModalMatch?.params.movieId && pInfo?.results.find((movie) => movie.id + "" === ModalMatch.params.movieId);
+
+  const clickedTMovie = ModalMatch?.params.movieId && tInfo?.results.find((movie) => movie.id + "" === ModalMatch.params.movieId);
+
+  const clickedWMovie = ModalMatch?.params.movieId && wInfo?.results.find((movie) => movie.id + "" === ModalMatch.params.movieId);
+
+  //
+  const ModalID = pDex ? ModalMatch?.params.movieId + "p" : tDex ? ModalMatch?.params.movieId + "t" : wDex ? ModalMatch?.params.movieId + "w" : ModalMatch?.params.movieId;
 
   return (
     <Wrapper>
@@ -393,6 +569,20 @@ function Home() {
                   <FontAwesomeIcon icon={isSound === "0" ? faVolumeMute : faVolumeHigh} />
                 </SoundSvg>
               </SoundBtn>
+              <MainBox variants={btnVars} animate="animate">
+                <MainPlayBtn variants={hoverVars} whileHover="hover" onClick={() => alert("Please Sign in first.")}>
+                  <span>
+                    <FontAwesomeIcon icon={faPlay} />
+                    Play
+                  </span>
+                </MainPlayBtn>
+                <MainInfoBtn variants={hoverVars} whileHover="hover" onClick={() => onBoxClicked(Number(stateMovieId))}>
+                  <span>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    More Info
+                  </span>
+                </MainInfoBtn>
+              </MainBox>
             </Overlays>
             <ReactPlayer
               style={{ backgroundColor: `linear-gradient(to top, black, transparent)` }}
@@ -407,7 +597,7 @@ function Home() {
             />
           </PlayerWrapper>
           <SliderContainer>
-            <Span1>Now Playing</Span1>
+            <Span1>Trending Now</Span1>
             <Slider>
               <PageChange>
                 <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseIndex}>
@@ -443,12 +633,123 @@ function Home() {
               </AnimatePresence>
             </Slider>
           </SliderContainer>
+          <SliderContainer>
+            <Span1>Only on Gyulflix</Span1>
+            <Slider>
+              <PageChange>
+                <Decrease whileHover={{ scale: 1.2 }} onClick={decreasePIndex}>
+                  <ArrowBackIosIcon style={{ marginLeft: 20 }} fontSize="large" />
+                </Decrease>
+                <Increase whileHover={{ scale: 1.2 }} onClick={increasePIndex}>
+                  <ArrowForwardIosIcon fontSize="large" />
+                </Increase>
+              </PageChange>
+              <AnimatePresence custom={isBack} initial={false} onExitComplete={toggleLeaving}>
+                <Row custom={isBack} variants={rowVars} initial="invisible" animate="visible" exit="exit" transition={{ type: "tween", duration: 1 }} key={pIndex}>
+                  {pInfo?.results
+                    .slice(1)
+                    .slice(offset * pIndex, offset * pIndex + offset)
+                    .map((movie) => (
+                      <Box
+                        layoutId={movie.id + "p"}
+                        key={movie.id}
+                        whileHover="hover"
+                        initial="normal"
+                        exit="exit"
+                        variants={boxVars}
+                        transition={{ type: "tween" }}
+                        onClick={() => onPBoxClicked(movie.id)}
+                        bgphoto={makeImagePath(movie.backdrop_path, "w500")}
+                      >
+                        <InfoBox variants={infoVars}>
+                          <p>{movie.title}</p>
+                        </InfoBox>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </SliderContainer>
+          <SliderContainer>
+            <Span1>Movie of the Week</Span1>
+            <Slider>
+              <PageChange>
+                <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseWIndex}>
+                  <ArrowBackIosIcon style={{ marginLeft: 20 }} fontSize="large" />
+                </Decrease>
+                <Increase whileHover={{ scale: 1.2 }} onClick={increaseWIndex}>
+                  <ArrowForwardIosIcon fontSize="large" />
+                </Increase>
+              </PageChange>
+              <AnimatePresence custom={isBack} initial={false} onExitComplete={toggleLeaving}>
+                <Row custom={isBack} variants={rowVars} initial="invisible" animate="visible" exit="exit" transition={{ type: "tween", duration: 1 }} key={wIndex}>
+                  {wInfo?.results
+                    .slice(1)
+                    .slice(offset * wIndex, offset * wIndex + offset)
+                    .map((movie) => (
+                      <Box
+                        layoutId={movie.id + "w"}
+                        key={movie.id}
+                        whileHover="hover"
+                        initial="normal"
+                        exit="exit"
+                        variants={boxVars}
+                        transition={{ type: "tween" }}
+                        onClick={() => onWBoxClicked(movie.id)}
+                        bgphoto={makeImagePath(movie.backdrop_path, "w500")}
+                      >
+                        <InfoBox variants={infoVars}>
+                          <p>{movie.title}</p>
+                        </InfoBox>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </SliderContainer>
+          <SliderContainer>
+            <Span1>Top Rated Movies</Span1>
+            <Slider>
+              <PageChange>
+                <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseTIndex}>
+                  <ArrowBackIosIcon style={{ marginLeft: 20 }} fontSize="large" />
+                </Decrease>
+                <Increase whileHover={{ scale: 1.2 }} onClick={increaseTIndex}>
+                  <ArrowForwardIosIcon fontSize="large" />
+                </Increase>
+              </PageChange>
+              <AnimatePresence custom={isBack} initial={false} onExitComplete={toggleLeaving}>
+                <Row custom={isBack} variants={rowVars} initial="invisible" animate="visible" exit="exit" transition={{ type: "tween", duration: 1 }} key={tIndex}>
+                  {tInfo?.results
+                    .slice(1)
+                    .slice(offset * tIndex, offset * tIndex + offset)
+                    .map((movie) => (
+                      <Box
+                        layoutId={movie.id + "t"}
+                        key={movie.id}
+                        whileHover="hover"
+                        initial="normal"
+                        exit="exit"
+                        variants={boxVars}
+                        transition={{ type: "tween" }}
+                        onClick={() => onTBoxClicked(movie.id)}
+                        bgphoto={makeImagePath(movie.backdrop_path, "w500")}
+                      >
+                        <InfoBox variants={infoVars}>
+                          <p>{movie.title}</p>
+                        </InfoBox>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </SliderContainer>
           <AnimatePresence>
             {ModalMatch ? (
               <>
                 <Overlay onClick={onOverlayClicked} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-                <Modal style={{ top: scrollY.get() + 100 }} layoutId={ModalMatch.params.movieId}>
-                  {clickedMovie && (
+                <Modal style={{ top: scrollY.get() + 100 }} layoutId={ModalID}>
+                  {(clickedMovie || clickedPMovie || clickedTMovie || clickedWMovie) && (
                     <>
                       <ModalCover>
                         <MovieDetail />
@@ -465,3 +766,5 @@ function Home() {
   );
 }
 export default Home;
+
+// !pDex ? ModalMatch.params.movieId : ModalMatch.params.movieId + "p";

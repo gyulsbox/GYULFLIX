@@ -15,6 +15,7 @@ interface IMovie {
   overview: string;
   release_date: string;
   vote_average: string;
+  media_type: string;
 }
 
 interface ITv {
@@ -159,7 +160,22 @@ export interface IGetTvImages {
 
 // MOVIE API
 export const getMovies = async () => {
-  const response = await fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}&page=1`);
+  const response = await fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&page=1`);
+  return await response.json();
+};
+
+export const getMoviesPopular = async () => {
+  const response = await fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}&page=2`);
+  return await response.json();
+};
+
+export const getMoviesTop = async () => {
+  const response = await fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&page=1`);
+  return await response.json();
+};
+
+export const getMoviesWeek = async () => {
+  const response = await fetch(`${BASE_PATH}/trending/movie/week?api_key=${API_KEY}&page=1`);
   return await response.json();
 };
 
@@ -189,6 +205,16 @@ export const getTv = async () => {
   return await response.json();
 };
 
+export const getTvTop = async () => {
+  const response = await fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&page=1`);
+  return await response.json();
+};
+
+export const getTvAir = async () => {
+  const response = await fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&page=2`);
+  return await response.json();
+};
+
 export const getTvDetail = async (tvId?: string) => {
   const response = await fetch(`${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=en-US`);
   return await response.json();
@@ -206,6 +232,11 @@ export const getTvTrailer = async (tvId?: string) => {
 
 export const getTvImages = async (tvId?: string) => {
   const response = await fetch(`${BASE_PATH}/tv/${tvId}/images?api_key=${API_KEY}`);
+  return await response.json();
+};
+
+export const getNewPopular = async () => {
+  const response = await fetch(`${BASE_PATH}/trending/all/week?api_key=${API_KEY}&page=1`);
   return await response.json();
 };
 
