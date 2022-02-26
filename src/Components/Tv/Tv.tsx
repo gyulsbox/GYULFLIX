@@ -100,7 +100,7 @@ const MainInfoBtn = styled(motion.button)`
 
 const SoundBtn = styled(motion.button)`
   position: absolute;
-  top: 65%;
+  top: 62%;
   right: 0;
   font-size: 25px;
   height: 30px;
@@ -123,7 +123,7 @@ const SoundSvg = styled(motion.div)`
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 55%;
+  width: 52%;
   height: 100%;
   right: 110px;
   border: 1px solid white;
