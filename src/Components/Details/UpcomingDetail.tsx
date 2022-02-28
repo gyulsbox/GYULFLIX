@@ -269,7 +269,15 @@ const UpcmoingDetail = () => {
                   </MainContainer>
                   <TrailerContainer>
                     <TrailerBox>
-                      <ReactPlayer url={makeVideoPath(data?.results[0].key)} volume={volum ? 0.2 : 0} controls={false} playing={true} loop={true} width="180%" height="180%"></ReactPlayer>
+                      <ReactPlayer
+                        url={makeVideoPath(data?.results.find((x) => x.type === "Trailer")?.key || "")}
+                        volume={volum ? 0.2 : 0}
+                        controls={false}
+                        playing={true}
+                        loop={true}
+                        width="180%"
+                        height="180%"
+                      ></ReactPlayer>
                       <BannerVolum variants={btnVars} animate="animate" whileHover="hover" onClick={volumClick}>
                         {volum ? <VolumeUpIcon /> : <VolumeOffIcon />}
                       </BannerVolum>

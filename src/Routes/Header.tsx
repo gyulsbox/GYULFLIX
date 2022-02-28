@@ -3,6 +3,8 @@ import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { red } from "@mui/material/colors";
+import { color } from "@mui/system";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -47,8 +49,10 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  &:hover {
-    color: ${(props) => props.theme.white.lighter};
+  a:hover {
+    color: ${(props) => props.theme.red};
+    transition: all 0.3s ease-in-out;
+    
   }
 `;
 
@@ -131,6 +135,12 @@ function Header() {
     } else {
       // trigger the open animation
       inputAnimation.start({ scaleX: 1 });
+      setTimeout(() => {
+        setSearchOpen((perv) => !perv);
+        inputAnimation.start({
+          scaleX: 0,
+        });
+      }, 10000);
     }
     setSearchOpen((prev) => !prev);
   };
@@ -143,10 +153,10 @@ function Header() {
       }
     });
   }, [scrollY, navAnimation]);
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { register, handleSubmit, setFocus } = useForm<IForm>();
   const onVaild = (data: IForm) => {
-    history(`/search?keyword=${data.keyword}`);
+    navigate(`/search?query=${data.keyword}`);
   };
 
   if (movieMatch === null && movieDetailMatch === null && tvMatch === null && tvDetailMatch === null && upcomingMatch == null && upcomingDetailMatch === null) return null;

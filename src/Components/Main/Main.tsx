@@ -79,8 +79,8 @@ const LoginBtnBox = styled.div`
 `;
 
 const LoginBox = styled.div`
-  width: 120px;
-  height: 50px;
+  width: 100px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,7 +153,7 @@ const SectionBtn = styled.span`
 
 const PlayContainer = styled.div`
   width: 100%;
-  /* height: 50vh; */
+  height: 50%;
   padding: 70px 45px;
   border-bottom: 8px solid #222;
   display: flex;
@@ -182,6 +182,17 @@ const TextContainer = styled.div`
   h4 {
     font-size: 23px;
   }
+  @media screen and (max-width: 1280px) {
+    min-width: 420px;
+    h1 {
+      font-size: 40px;
+      font-weight: 600;
+      padding-bottom: 20px;
+    }
+    h4 {
+      font-size: 17px;
+    }
+  }
 `;
 
 const VideoContainer = styled.div`
@@ -189,6 +200,11 @@ const VideoContainer = styled.div`
   max-height: 100%;
   position: relative;
   overflow: hidden;
+  @media screen and (max-width: 1280px) {
+    img {
+      max-width: 450px;
+    }
+  }
 `;
 
 const VideoImg = styled.img`
@@ -197,6 +213,9 @@ const VideoImg = styled.img`
   border: 0;
   position: relative;
   z-index: 2;
+  @media screen and (max-width: 1280px) {
+    max-width: 450px;
+  }
 `;
 
 const VideoWrapper = styled.div`
@@ -208,6 +227,8 @@ const VideoWrapper = styled.div`
   top: 34%;
   left: 48%;
   transform: translate(-50%, -50%);
+  @media screen and (max-width: 1280px) {
+  }
 `;
 
 const SecondVideoWrapper = styled.div`

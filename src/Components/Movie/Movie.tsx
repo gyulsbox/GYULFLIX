@@ -376,16 +376,17 @@ function Home() {
   const { data: trailer } = useQuery<IGetMoviesTrailer>("startMovieTrailer", () => getMoviesTrailer(String(stateMovieId)));
   const { data: logo } = useQuery<IGetMovieImages>("movieLogo", () => getMovieImages(String(stateMovieId)));
 
-  // some of state
+  // state
+  // index
   const [index, setIndex] = useState(0);
   const [pIndex, setPIndex] = useState(0);
   const [tIndex, setTIndex] = useState(0);
   const [wIndex, setWIndex] = useState(0);
-
+  // boolean's
   const [leaving, setLeaving] = useState(false);
   const [isBack, setIsBack] = useState(false);
   const [isVolum, setIsVolum] = useState(false);
-
+  // boolean's that define where who clicked
   const [pDex, setPDex] = useState(false);
   const [tDex, setTDex] = useState(false);
   const [wDex, setWDex] = useState(false);

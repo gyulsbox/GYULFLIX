@@ -6,7 +6,7 @@ import Main from "../Components/Main/Main";
 import Upcoming from "../Components/Upcoming/Upcoming";
 import Header from "./Header";
 import Movie from "../Components/Movie/Movie";
-import UpcomingDetail from '../Components/Details/UpcomingDetail';
+import UpcomingDetail from "../Components/Details/UpcomingDetail";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
           </Route>
           <Route path="/upcoming" element={<Upcoming />} />
           <Route path="/upcoming/:upcomingId" element={<UpcomingDetail />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/search/*" element={<Search />} />
         </Routes>
       </Router>
       <ReactQueryDevtools />

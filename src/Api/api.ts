@@ -246,6 +246,6 @@ export const getUpcoming = async (number?: number) => {
 };
 
 export const getSearch = async (query?: string) => {
-  const response = await fetch(`${BASE_PATH}/search/multi?api_key=${API_KEY}&query=${query}&page=1&include_adult=false`);
+  const response = await fetch(`${BASE_PATH}/search/multi?api_key=${API_KEY}&query=${query}`);
   return await response.json();
 };

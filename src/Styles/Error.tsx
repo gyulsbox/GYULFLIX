@@ -10,7 +10,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("https://user-images.githubusercontent.com/79081800/150473965-fbc32c06-12b2-4b22-8c75-fba34e923475.jpg");
+  background-image: url("https://timescineplex.com/times/img/no-poster.png");
+  background-position: center;
 `;
 
 const Error = () => {
