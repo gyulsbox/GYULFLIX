@@ -1,7 +1,6 @@
-![slice](https://capsule-render.vercel.app/api?type=slice&color=auto&height=200&text=Gyulflix&fontAlign=70&rotate=13&fontAlignY=25&descAlign=70.&descAlignY=44)
-
-### Gyulflix
-- 🏠 [HomePage](https://gyulsbox.github.io/gyulflix/)
+<p align='center'>
+  <img src="https://user-images.githubusercontent.com/85726838/156254529-961a9637-4e5a-4579-a525-0856fd0bcada.png" width=80% alt='logo'/>
+</p>
 
 <div align='center'>
   <img src='https://img.shields.io/badge/React-v17.0.2-blue?style=flat-square&logo=React'/>
@@ -15,8 +14,14 @@
   <img src="https://img.shields.io/badge/-React--player--2.9.0-grey?style=flat-square&" />
   <img src="https://img.shields.io/badge/-React--helmet--6.1.0-grey?style=flat-square&" />
   <img src="https://img.shields.io/badge/-Recoil--0.6.1-blue?style=flat-square&"/>
+  <br>
+  <br>                                                                              
+  🏠 (https://gyulsbox.github.io/gyulflix/)                                                                             
 </div>
-
+<br>
+<br>                                                                                
+<br>
+                                                                                
 ```
 └─── src
     │    App.tsx
