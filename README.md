@@ -10,10 +10,10 @@
   <img src="https://img.shields.io/badge/TypeScript-4.5.5-3178C6?style=flat-square&logo=TypeScript&logoColor=#3178C6" alt="TypeScript badge" />
   <img src="https://img.shields.io/badge/React Query-3.34.16-red?style=flat-square&logo=React Query&logoColor=red"" />
   <br>
-  <img src="https://img.shields.io/badge/-React--hook--form--7.27.1-grey?style=flat-square&" />
-  <img src="https://img.shields.io/badge/-React--player--2.9.0-grey?style=flat-square&" />
-  <img src="https://img.shields.io/badge/-React--helmet--6.1.0-grey?style=flat-square&" />
-  <img src="https://img.shields.io/badge/-Recoil--0.6.1-blue?style=flat-square&"/>
+  <img src="https://img.shields.io/badge/-React--hook--form--7.27.1-purple?style=flat-square&" />
+  <img src="https://img.shields.io/badge/-React--player--2.9.0-purple?style=flat-square&" />
+  <img src="https://img.shields.io/badge/-React--helmet--6.1.0-purple?style=flat-square&" />
+  <img src="https://img.shields.io/badge/-Recoil--0.6.1-purple?style=flat-square&"/>
   <br>
   <br>                                                                              
   🏠 (https://gyulsbox.github.io/gyulflix/)                                                                             
