@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/gyulflix/static/css/main.a09547c7.css",
+    "main.js": "/gyulflix/static/js/main.e42f7412.js",
+    "index.html": "/gyulflix/index.html",
+    "main.a09547c7.css.map": "/gyulflix/static/css/main.a09547c7.css.map",
+    "main.e42f7412.js.map": "/gyulflix/static/js/main.e42f7412.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a09547c7.css",
+    "static/js/main.e42f7412.js"
+  ]
+}
