@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import styled from "styled-components";
 
 const Container = styled.div`
+  font-family: "Raleway Sans";
   width: 100%;
   height: calc(100vh - 86px);
   display: flex;

@@ -2,7 +2,6 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
 
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,7 +19,7 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
+  font: 'Raleway Sans';
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -31,12 +30,7 @@ footer, header, hgroup, main, menu, nav, section {
 /* HTML5 hidden-attribute fix for newer browsers */
 *[hidden] {
     display: none;
-}
-body {
-  line-height: 1;
-    ::-webkit-scrollbar {
-    display: none;
-  }
+
 }
 menu, ol, ul {
   list-style: none;
@@ -66,8 +60,11 @@ table {
   }
 }
 body {
-  font-weight: 500;
-  font-family: 'Source Sans Pro', sans-serif;
+  line-height: 1;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  font-family: 'Raleway Sans';
   color:black;
   line-height: 1.2;
   background-color: black;

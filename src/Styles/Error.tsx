@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Back from "./Back";
 
 const Container = styled.div`
+  font-family: "Raleway Sans";
   width: 100%;
   height: calc(100vh - 86px);
   position: absolute;

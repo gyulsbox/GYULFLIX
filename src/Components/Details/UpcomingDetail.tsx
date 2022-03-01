@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 export const Body = styled.div`
+  font-family: "Raleway Sans";
   width: 100%;
   height: 100%;
 `;

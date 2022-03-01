@@ -7,6 +7,7 @@ import { makeImagePath, noPoster } from "../../Api/utils";
 import Loading from "../../Styles/Loading";
 
 const Body = styled.div`
+  font-family: "Raleway Sans";
   width: 100%;
   height: 100vh;
   position: relative;

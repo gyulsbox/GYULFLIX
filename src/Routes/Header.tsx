@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import gyulflix from "../resources/img/gyulflix.png";
 
 const Nav = styled(motion.nav)`
+  font-family: "Raleway Sans";
   display: flex;
   justify-content: space-between;
   align-items: center;

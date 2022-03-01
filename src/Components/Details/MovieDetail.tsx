@@ -14,6 +14,7 @@ import { faVolumeHigh, faVolumeMute, faPlayCircle, faXmark } from "@fortawesome/
 import { InfoBox, infoVars } from "../Movie/Movie";
 
 const Container = styled(motion.div)`
+  font-family: "Raleway Sans";
   width: 100%;
   height: 80vh;
   color: white;

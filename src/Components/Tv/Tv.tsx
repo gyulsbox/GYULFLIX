@@ -16,12 +16,14 @@ import { faInfoCircle, faPlay, faVolumeHigh, faVolumeMute } from "@fortawesome/f
 import TvDetail from "../Details/TvDetail";
 
 const Wrapper = styled.div`
+  font-family: "Raleway Sans";
   height: 100%;
   background: #141414;
   overflow-x: hidden;
 `;
 
 const PlayerWrapper = styled.div`
+  font-family: "Raleway Sans";
   min-width: 100%;
   height: 90vh;
   background-color: black;
@@ -350,7 +352,7 @@ export const infoVars = {
 const titleVars = {
   animate: (lowR: boolean) => ({
     scale: 0.8,
-    y: lowR ? 95 : 150,
+    y: lowR ? 95 : 110,
     x: -20,
     transition: {
       delay: 5,

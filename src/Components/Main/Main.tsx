@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import gyulflix from "../../resources/img/gyulflix.png";
 
 const Body = styled.div`
+  font-family: "Raleway Sans";
   min-width: 1024px;
   max-height: 100%;
   word-break: keep-all;

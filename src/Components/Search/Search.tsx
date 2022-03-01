@@ -10,6 +10,7 @@ import Loading from "../../Styles/Loading";
 import NoResult from "../../Styles/NoResult";
 
 const Body = styled.div`
+  font-family: "Raleway Sans";
   width: 100%;
   height: 100%;
   position: relative;
