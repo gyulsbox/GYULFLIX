@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
-import { useMatch } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getMoviesDetail, getMoviesTrailer, IGetMoviesDetail, IGetMoviesTrailer } from "../../Api/api";
 import { makeImagePath, makeVideoPath, noPoster } from "../../Api/utils";
@@ -11,6 +11,7 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import Error from "../../Styles/Error";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 export const Body = styled.div`
   width: 100%;
@@ -102,21 +103,12 @@ export const TitleBox = styled.div`
   width: 95%;
   height: 35%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Title = styled.div`
   width: 100%;
-  height: 100%;
-  overflow-x: scroll;
-  &::-webkit-scrollbar {
-    width: 7px;
-    border-radius: 50px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: linear-gradient(#e0eafc, #cfdef3);
-    border-radius: 50px;
-  }
   span {
     font-size: 80px;
     font-weight: 600;
@@ -205,6 +197,10 @@ export const MiniTrailer = styled.div`
   overflow: hidden;
 `;
 
+const Back = styled.div`
+  margin: auto;
+`;
+
 const btnVars = {
   animate: {
     opacity: 0,
@@ -223,6 +219,10 @@ const UpcmoingDetail = () => {
   const { isLoading, data } = useQuery<IGetMoviesTrailer>("trailer", () => getMoviesTrailer(upcomingMatch?.params.upcomingId));
   const { data: info } = useQuery<IGetMoviesDetail>("MovieDetail", () => getMoviesDetail(upcomingMatch?.params.upcomingId));
   const volumClick = () => setVolum((prev) => !prev);
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(-1);
+  };
   return (
     <>
       <Helmet>
@@ -248,6 +248,9 @@ const UpcmoingDetail = () => {
                       <Title>
                         <span>{info?.original_title}</span>
                       </Title>
+                      <Back>
+                        <KeyboardBackspaceIcon onClick={onClick} style={{ width: "30px", height: "30px", cursor: "pointer" }} />
+                      </Back>
                     </TitleBox>
                     <OverviewBox>
                       <Overview>

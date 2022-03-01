@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import Back from "./Back";
 
 const Container = styled.div`
   width: 100%;
@@ -17,7 +16,6 @@ const Container = styled.div`
 const Loading = () => {
   return (
     <>
-      <Back />
       <Container>
         <Box>
           <CircularProgress />

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
@@ -31,16 +31,6 @@ const PlayerWrapper = styled.div`
   overflow: hidden;
 `;
 
-// const Banner = styled.div<{ bgphoto: string }>`
-//   height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   padding: 60px;
-//   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url(${(props) => props.bgphoto});
-//   background-size: cover;
-// `;
-
 const Title = styled(motion.img)`
   width: 30%;
   margin-left: 20px;
@@ -53,6 +43,9 @@ const Overview = styled(motion.p)`
   width: 50%;
   padding: 20px;
   margin-left: 20px;
+  @media screen and (max-width: 1280px) {
+    font-size: 20px;
+  }
 `;
 
 const MainBox = styled(motion.div)`
@@ -84,6 +77,11 @@ const MainPlayBtn = styled(motion.button)`
   svg {
     margin-right: 10px;
   }
+  @media screen and (max-width: 1280px) {
+    span {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const MainInfoBtn = styled(motion.button)`
@@ -95,6 +93,12 @@ const MainInfoBtn = styled(motion.button)`
   }
   svg {
     margin-right: 10px;
+  }
+  @media screen and (max-width: 1280px) {
+    width: 35%;
+    span {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -116,6 +120,10 @@ const SoundBtn = styled(motion.button)`
   align-items: center;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+  @media screen and (max-width: 1280px) {
+    top: 64%;
+    font-size: 18px;
+  }
 `;
 
 const SoundSvg = styled(motion.div)`
@@ -129,6 +137,9 @@ const SoundSvg = styled(motion.div)`
   border: 1px solid white;
   border-radius: 50%;
   cursor: pointer;
+  @media screen and (max-width: 1280px) {
+    right: 70px;
+  }
 `;
 
 const PageChange = styled.div`
@@ -138,6 +149,9 @@ const PageChange = styled.div`
   justify-content: space-between;
   align-items: center;
   position: absolute;
+  @media screen and (max-width: 1280px) {
+    height: 150px;
+  }
 `;
 
 export const Increase = styled(motion.div)`
@@ -171,6 +185,11 @@ export const Span1 = styled(motion.span)`
   position: absolute;
   top: -150px;
   left: 20px;
+  @media screen and (max-width: 1280px) {
+    font-size: 20px;
+    top: -110px;
+    margin-left: 20px;
+  }
 `;
 
 export const SliderContainer = styled(motion.div)`
@@ -178,6 +197,9 @@ export const SliderContainer = styled(motion.div)`
   width: 100%;
   position: relative;
   margin-bottom: 5%;
+  @media screen and (max-width: 1280px) {
+    margin-bottom: 1%;
+  }
 `;
 
 const Slider = styled.div`
@@ -209,6 +231,9 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   }
   &:last-child {
     transform-origin: center right;
+  }
+  @media screen and (max-width: 1280px) {
+    height: 150px;
   }
 `;
 
@@ -323,15 +348,15 @@ export const infoVars = {
 };
 
 const titleVars = {
-  animate: {
+  animate: (lowR: boolean) => ({
     scale: 0.8,
-    y: 110,
+    y: lowR ? 95 : 150,
     x: -20,
     transition: {
       delay: 5,
       duration: 1,
     },
-  },
+  }),
 };
 
 const descVars = {
@@ -387,6 +412,19 @@ function Tv() {
 
   const [aDex, setADex] = useState(false);
   const [tDex, setTDex] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [lowR, setLowR] = useState(false);
+
+  // is width 1280px up or down
+  const handleResize = () => setWidth(window.innerWidth);
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    if (width <= 1280) {
+      setLowR(true);
+    } else {
+      setLowR(false);
+    }
+  }, [width, lowR]);
 
   // Recoil State Management about Trailer Sound
   const [isSound, setIsSound] = useRecoilState<SoundEnums>(isSoundAtom);
@@ -520,7 +558,7 @@ function Tv() {
         <>
           <PlayerWrapper>
             <Overlays>
-              <Title variants={titleVars} animate="animate" src={makeImagePath(logo?.logos[0].file_path + "")} />
+              <Title custom={lowR} variants={titleVars} animate="animate" src={makeImagePath(logo?.logos[0].file_path + "")} />
               <Overview variants={descVars} animate="animate">
                 {info?.results[2].overview}
               </Overview>
@@ -582,7 +620,7 @@ function Tv() {
                         variants={boxVars}
                         transition={{ type: "tween" }}
                         onClick={() => onBoxClicked(tv.id)}
-                        bgphoto={tv.backdrop_path === null ? noPoster : makeImagePath(tv.backdrop_path)}
+                        bgphoto={tv.backdrop_path === null ? noPoster : makeImagePath(tv.backdrop_path, "w500")}
                       >
                         <InfoBox variants={infoVars}>
                           <p>{tv.name}</p>
@@ -619,7 +657,7 @@ function Tv() {
                         variants={boxVars}
                         transition={{ type: "tween" }}
                         onClick={() => onTBoxClicked(tv.id)}
-                        bgphoto={tv.backdrop_path === null ? noPoster : makeImagePath(tv.backdrop_path)}
+                        bgphoto={tv.backdrop_path === null ? noPoster : makeImagePath(tv.backdrop_path, "w500")}
                       >
                         <InfoBox variants={infoVars}>
                           <p>{tv.name}</p>
