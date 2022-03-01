@@ -22,7 +22,7 @@
 <br />
 ### Main                                                                            
 <br>
-                                                                                
+
 ```
 └─── src
     │    App.tsx
@@ -41,7 +41,7 @@
     │   │
     │   ├─── Main
     │   │         Main.tsx
-    │   │      
+    │   │
     │   ├─── Movie
     │   │         Movie.tsx
     │   │
