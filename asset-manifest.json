@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/gyulflix/static/css/main.a09547c7.css",
-    "main.js": "/gyulflix/static/js/main.743c311f.js",
-    "static/media/raleway-v26-latin-regular.woff2": "/gyulflix/static/media/raleway-v26-latin-regular.d0033942a11996c40380.woff2",
-    "index.html": "/gyulflix/index.html",
-    "main.a09547c7.css.map": "/gyulflix/static/css/main.a09547c7.css.map",
-    "main.743c311f.js.map": "/gyulflix/static/js/main.743c311f.js.map"
+    "main.css": "/GYULFLIX/static/css/main.a09547c7.css",
+    "main.js": "/GYULFLIX/static/js/main.ce77f0b3.js",
+    "static/media/raleway-v26-latin-regular.woff2": "/GYULFLIX/static/media/raleway-v26-latin-regular.d0033942a11996c40380.woff2",
+    "index.html": "/GYULFLIX/index.html",
+    "main.a09547c7.css.map": "/GYULFLIX/static/css/main.a09547c7.css.map",
+    "main.ce77f0b3.js.map": "/GYULFLIX/static/js/main.ce77f0b3.js.map"
   },
   "entrypoints": [
     "static/css/main.a09547c7.css",
-    "static/js/main.743c311f.js"
+    "static/js/main.ce77f0b3.js"
   ]
 }
