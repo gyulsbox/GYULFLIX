@@ -27,7 +27,10 @@
 └─── src
     │    App.tsx
     │    index.tsx
+    │    theme.ts                                                                              
     │    react-app-env.d.ts
+    │    font.d.ts
+    │    style.d.ts                                                                                                                                            
     │
     ├─── Api
     │        api.ts
