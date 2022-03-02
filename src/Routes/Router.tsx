@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Search from "../Components/Search/Search";
 import Tv from "../Components/Tv/Tv";
 import { ReactQueryDevtools } from "react-query/devtools";

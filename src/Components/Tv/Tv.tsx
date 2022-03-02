@@ -23,7 +23,6 @@ const Wrapper = styled.div`
 `;
 
 const PlayerWrapper = styled.div`
-  font-family: "Raleway Sans";
   min-width: 100%;
   height: 90vh;
   background-color: black;
@@ -352,7 +351,7 @@ export const infoVars = {
 const titleVars = {
   animate: (lowR: boolean) => ({
     scale: 0.8,
-    y: lowR ? 95 : 110,
+    y: lowR ? 95 : 100,
     x: -20,
     transition: {
       delay: 5,
