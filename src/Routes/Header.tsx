@@ -18,6 +18,10 @@ const Nav = styled(motion.nav)`
   padding: 20px 60px;
   color: white;
   z-index: 100;
+  @media all and (max-width: 1024px) {
+    padding: 10px 20px;
+    font-size: 8px;
+  }
 `;
 
 const Col = styled.div`
@@ -27,10 +31,22 @@ const Col = styled.div`
 
 const Logo = styled(motion.div)`
   margin-right: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 95px;
   height: 25px;
   img {
     width: 100%;
+    display: block;
+  }
+  a {
+    margin: 0;
+
+  }
+  @media all and (max-width: 1024px) {
+    width: 20%;
+    margin-right: 20px;
   }
 `;
 
@@ -51,6 +67,9 @@ const Item = styled.li`
     color: ${(props) => props.theme.red};
     transition: all 0.3s ease-in-out;
   }
+  @media all and (max-width: 1024px) {
+    margin-right: 8px;
+  }
 `;
 
 const Search = styled.form`
@@ -60,6 +79,11 @@ const Search = styled.form`
   position: relative;
   svg {
     height: 25px;
+  }
+  @media all and (max-width: 1024px) {
+    svg {
+      height: 15px;
+    }
   }
 `;
 

@@ -52,7 +52,7 @@ const Overview = styled(motion.p)`
 const MainBox = styled(motion.div)`
   position: absolute;
   width: 30%;
-  padding: 20px;
+  padding: 2rem;
   margin-left: 20px;
   top: 60%;
   left: 3.5%;
@@ -134,13 +134,13 @@ const SoundSvg = styled(motion.div)`
   position: absolute;
   width: 52%;
   height: 100%;
-  right: 110px;
+  right: 110%;
   border: 1px solid white;
   border-radius: 50%;
   cursor: pointer;
-  @media screen and (max-width: 1280px) {
+  /* @media screen and (max-width: 1280px) {
     right: 70px;
-  }
+  } */
 `;
 
 const PageChange = styled.div`
@@ -351,7 +351,7 @@ export const infoVars = {
 const titleVars = {
   animate: (lowR: boolean) => ({
     scale: 0.8,
-    y: lowR ? 95 : 100,
+    y: lowR ? '65%' : '40%',
     x: -20,
     transition: {
       delay: 5,
