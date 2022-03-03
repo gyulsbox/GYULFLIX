@@ -16,7 +16,7 @@
   <img src="https://img.shields.io/badge/-Recoil--0.6.1-purple?style=flat-square&"/>
   <br />
   <br />                                                                              
- https://gyulsbox.github.io/GYULFLIX/                                                                             
+  <a href='https://gyulsbox.github.io/GYULFLIX/'> -->🏠<--</a>                                                                             
 </div>
 
 # Description                                                                                
