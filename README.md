@@ -34,19 +34,19 @@ Main은 기존 넷플릭스와 같은 형태로 만들었습니다.
   <br />
   <br />   
   
-### Movie
+### Movies
 <img src='https://user-images.githubusercontent.com/85726838/156602236-956295d0-343a-4773-89ab-b5e7b3827aeb.gif' />
-  Movie는 The Movie Database (TMDB)의 API를 fetching 하여 메인에는 첫번쨰 Trending 영화의 트레일러를 받아와 React-Player로 재생합니다.
+  The Movie Database (TMDB)의 API를 fetching 하여 메인에는 첫번쨰 Trending 영화의 트레일러를 받아와 React-Player로 재생합니다.
   로고와 영화설명 그리고 하단 영화의 나열은 Framer-motion을 사용하여 Animation을 주었습니다.
   <br />
   <br />   
   <br />
   <br /> 
   
-### Movie Detail
+### Movies Detail
 <img src='https://user-images.githubusercontent.com/85726838/156602252-233ac6ed-7ee3-489c-93d9-a38e4c32fc51.gif' />
-  하단의 영화를 클릭하면 클릭된 영화의 id값을 React-router-dom을 이용한 Nested router를 사용하여
-  Modal창에 값을 넘겨주고 열리도록 설정하였습니다.
+  하단의 영화를 클릭하면 클릭된 영화의 id값을 React-router-dom의 Nested router를 사용하여
+  Modal창에 값을 넘겨주고 해당 id값을 바탕으로 값을 받아와 나타나도록 하였습니다.
   <br />
   <br />   
   <br />
@@ -54,7 +54,7 @@ Main은 기존 넷플릭스와 같은 형태로 만들었습니다.
   
 ### Tv
 <img src='https://user-images.githubusercontent.com/85726838/156602264-953bbaad-b8c5-4e55-b275-14141a6f78dc.gif' />
-  Tv의 구조는 Movie와 동일합니다.
+  Tv의 구조는 Movies와 동일합니다.
   <br />
   <br />   
   <br />
@@ -62,7 +62,7 @@ Main은 기존 넷플릭스와 같은 형태로 만들었습니다.
   
 ### Tv Detail
 <img src='https://user-images.githubusercontent.com/85726838/156602269-439d82ad-1b0f-481a-af27-436aa080609a.gif' />
-  Tv의 구조는 Movie와 동일합니다.
+  Tv의 구조는 Movies와 동일합니다.
   <br />
   <br />   
   <br />
@@ -78,8 +78,8 @@ Main은 기존 넷플릭스와 같은 형태로 만들었습니다.
   
 ### Search
 <img src='https://user-images.githubusercontent.com/85726838/156602728-b1d0c952-7214-4f56-8611-971a84938cba.gif' />
-header의 오른쪽 검색 버튼을 클릭하여 검색값 입력시 Upcoming과 같은 형태로 검색값과 일치하거나 비슷한 영화 및 드라마를 표시해줍니다.
-선택시 Upcoming Detail과 같은 형태로 나타납니다.
+header의 오른쪽 검색 버튼을 클릭하여 검색값 입력시 Upcoming과 같은 형태로 검색값과 일치하거나 비슷한 영화 및 드라마를 나열해줍니다.
+클릭시 Upcoming Detail과 같은 형태로 나타납니다.
 <br />
 <br />
   <br />
