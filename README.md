@@ -28,7 +28,7 @@
 
 ### Main
 <img src='https://user-images.githubusercontent.com/85726838/156602223-c39437b2-e3aa-4114-8503-17580bc39511.gif'/>
-Main은 기존 넷플릭스와 같은 형태로 만들었습니다.
+메인페이지는 넷플릭스와 같은 형태로 만들었습니다.
   <br />
   <br />   
   <br />
