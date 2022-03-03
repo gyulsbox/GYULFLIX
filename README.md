@@ -19,7 +19,7 @@
  https://gyulsbox.github.io/GYULFLIX/                                                                             
 </div>
 
-## Description                                                                                
+# Description                                                                                
 > 22.02.22 ~ 22.03.02
 
 평소 영화를 사랑하는 편이어서 Netflix와 비슷한 형태의 프론트를 React 및 TypeScript를 활용하여 제작하게 되었습니다.
