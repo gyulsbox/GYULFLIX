@@ -354,7 +354,7 @@ export const infoVars = {
 const titleVars = {
   animate: (lowR: boolean) => ({
     scale: 0.8,
-    y: lowR ? '90%' : '70%',
+    y: lowR ? '90%' : '180%',
     x: -20,
     transition: {
       delay: 5,

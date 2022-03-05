@@ -292,11 +292,13 @@ const logoVars = {
 
 const Main = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("start", getMovies);
-  const { data: tvInfo } = useQuery<IGetTvResult>(["tvs"], getTv);
-  const { data: newInfo } = useQuery<IGetTvResult>(["new"], getNewPopular);
-  localStorage.setItem("movieId", String(data?.results[0].id));
-  localStorage.setItem("tvId", String(tvInfo?.results[2].id));
-  localStorage.setItem("latestId", String(newInfo?.results[0].id));
+  // const { data: tvInfo } = useQuery<IGetTvResult>(["tvs"], getTv);
+  // const { data: newInfo } = useQuery<IGetTvResult>(["new"], getNewPopular);
+  // localStorage.setItem("movieId", String(data?.results[0].id));
+  // localStorage.setItem("tvId", String(tvInfo?.results[2].id));
+  // localStorage.setItem("latestId", String(newInfo?.results[0].id));
+  localStorage.setItem("movieId", "414906");
+  localStorage.setItem("tvId", "116135");
   return (
     <>
       {isLoading ? (

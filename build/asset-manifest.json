@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/GYULFLIX/static/css/main.a09547c7.css",
-    "main.js": "/GYULFLIX/static/js/main.ce77f0b3.js",
+    "main.js": "/GYULFLIX/static/js/main.0282321b.js",
     "static/media/raleway-v26-latin-regular.woff2": "/GYULFLIX/static/media/raleway-v26-latin-regular.d0033942a11996c40380.woff2",
     "index.html": "/GYULFLIX/index.html",
     "main.a09547c7.css.map": "/GYULFLIX/static/css/main.a09547c7.css.map",
-    "main.ce77f0b3.js.map": "/GYULFLIX/static/js/main.ce77f0b3.js.map"
+    "main.0282321b.js.map": "/GYULFLIX/static/js/main.0282321b.js.map"
   },
   "entrypoints": [
     "static/css/main.a09547c7.css",
-    "static/js/main.ce77f0b3.js"
+    "static/js/main.0282321b.js"
   ]
 }
